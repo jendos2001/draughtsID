@@ -1,0 +1,11 @@
+
+path: ../train_data/
+train: images/train/
+val: images/val/
+
+# Classes
+names:
+  0: Empty_Black_Cell
+  1: Black_Draught
+  2: White_Draught
+ 
