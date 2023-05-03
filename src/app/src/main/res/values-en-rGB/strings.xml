@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DraughtsID</string>
+    <string name="pos">Position scan</string>
+    <string name="game">Game scan</string>
+    <string name="user">Profile</string>
+</resources>

@@ -1,0 +1,5 @@
+Board
+Black_Draught
+Black_King
+White_Draught
+White_King
