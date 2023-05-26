@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">DraughtsID</string>
-    <string name="pos">Сканирование\nпозиции</string>
-    <string name="game">Сканирование\nпартии</string>
-    <string name="user">Профиль</string>
+    <string name="pos">Position</string>
+    <string name="game">Game</string>
+    <string name="user">Profile</string>
+    <string name="title_activity_game">GameActivity</string>
 </resources>

@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.chaquo.python'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -16,27 +17,33 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        python{
-            pip{
-                install "torch"
-                install "pandas"
-                install "numpy"
-                install "pybase64"
-                install "Pillow"
-
-            }
-        }
         defaultConfig {
             ndk {
                 abiFilters "armeabi-v7a"
             }
 
             python {
-                pyc {
-                    src false
-                }
                 version "3.8"
-                buildPython "/usr/bin/python3"
+                buildPython "C:/Program Files (x86)/Programs/Python/Python310/python.exe"
+                pip{
+                    install "torch==1.8.1"
+                    install "opencv-python"
+                    install "pandas"
+                    install "pybase64"
+                    install "Pillow"
+                    install "requests"
+                    install "pandas"
+                    install "thop"
+                    install "tqdm"
+                    install "seaborn"
+                    install "setuptools"
+                    install "psutil"
+                    install "torchvision"
+                    install "utils"
+                    install "PyYAML"
+                    install "requires.io"
+
+                }
             }
 
         }
@@ -44,6 +51,9 @@ android {
             main {
                 python.srcDir "src/main/python"
             }
+        }
+        vectorDrawables {
+            useSupportLibrary true
         }
     }
 
@@ -64,18 +74,22 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 }
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.room:room-ktx:2.5.1'
+    kapt 'androidx.room:room-compiler:2.5.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.camera:camera-camera2:1.2.2'
     implementation 'androidx.camera:camera-lifecycle:1.2.2'
     implementation 'androidx.camera:camera-view:1.2.2'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
 }

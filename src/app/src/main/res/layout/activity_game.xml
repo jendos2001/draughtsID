@@ -25,25 +25,49 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Photo"/>
+        android:text="Check"/>
 
     <GridLayout
         android:id="@+id/types"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/purple_500"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/orientation"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"/>
-        <Spinner
-            android:id="@+id/color"
-            android:layout_columnWeight="1"
-            android:textAlignment="center"/>
+        <GridLayout
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Spinner
+                android:id="@+id/GameOrientation"
+                android:layout_columnWeight="1"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+
+            <Spinner
+                android:id="@+id/GameColor"
+                android:layout_columnWeight="1"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+        </GridLayout>
+        <GridLayout
+            android:layout_width="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <Spinner
+                android:id="@+id/firstMove"
+                android:layout_columnWeight="1"
+                android:layout_height="match_parent"
+                android:textAlignment="center" />
+        </GridLayout>
+
+
 
     </GridLayout>
 
