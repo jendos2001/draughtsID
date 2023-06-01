@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.chaquo.python'
-    id 'kotlin-kapt'
 }
 
 android {
@@ -84,12 +83,14 @@ android {
 dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.room:room-ktx:2.5.1'
-    kapt 'androidx.room:room-compiler:2.5.1'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.camera:camera-camera2:1.2.2'
     implementation 'androidx.camera:camera-lifecycle:1.2.2'
     implementation 'androidx.camera:camera-view:1.2.2'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
 
 }

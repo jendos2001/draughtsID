@@ -30,5 +30,29 @@ data class Game (
     @ColumnInfo(name = "round")
     var round: String,
     @ColumnInfo(name = "result")
-    var result: String
+    var result: String,
+    @ColumnInfo(name = "game")
+    var game: String
         )
+
+data class ProfileGame(
+    val id: Int,
+    val users: String,
+    var date: String,
+    var result: String
+)
+/*
+@Query("SELECT id, user1.name, user1.surname, user2.name, user2.surname, date, result \n" +
+            "FROM games \n" +
+            "INNER JOIN users AS user1 ON user1.id = games.user1 \n" +
+            "INNER JOIN users AS user2 ON user2.id = games.user2 \n")
+ */
+data class ProfileGameReturn(
+    val id: Int,
+    val user1Name: String,
+    val user1Surname: String,
+    val user2Name: String,
+    val user2Surname: String,
+    val date: String,
+    val result: String
+)

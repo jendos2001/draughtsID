@@ -46,6 +46,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var startPosition: String
     private lateinit var curPosition: String
     private var game = ""
+    private var isWhiteMove = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -158,6 +159,7 @@ class GameActivity : AppCompatActivity() {
                         val position = spinner.selectedItemPosition
                         val position2 = spinner2.selectedItemPosition
                         val position3 = spinner3.selectedItemPosition
+                        if (position3 == 1) isWhiteMove = 1 - isWhiteMove
                         Log.d("Start22", "start22")
 
                         Log.d("Timer", "timer")
@@ -165,11 +167,12 @@ class GameActivity : AppCompatActivity() {
                         Log.d("Timer", "timer2")
                         Log.d("Timer", "timer3")
                         val imgString = getStringImage(bitmap)
-                        val obj = pyo.callAttr("getMove", imgString, position, position2, curPosition)
+                        val obj = pyo.callAttr("getMove", imgString, position, position2, isWhiteMove, curPosition)
                         val move = obj.toString()
                         val tmp = move.split("|")
                         if (tmp[1] != "") curPosition = tmp[1]
                         game += " ${tmp[0]}"
+                        if (tmp[0] != "") isWhiteMove = 1 - isWhiteMove
                         Log.d("AAAAA", tmp[0])
                         Log.d("AAAAA", tmp[1])
                         image.close()
@@ -204,6 +207,12 @@ class GameActivity : AppCompatActivity() {
                     val imgString = getStringImage(bitmap)
                     val obj = pyo.callAttr("start", imgString, position, position2)
                     val pos = obj.toString().split("|")
+                    if (pos[0] == "Не удалось найти доску"){
+                        val intent = Intent(this@GameActivity, GameResutlActivity::class.java)
+                        intent.putExtra("game", pos[0])
+                        intent.putExtra("pdn", "")
+                        startActivityForResult(intent, 5)
+                    }
                     startPosition = pos[0]
                     curPosition = pos[0]
                     Log.d("AAAAA", pos[0])

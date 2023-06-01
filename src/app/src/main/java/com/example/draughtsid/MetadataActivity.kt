@@ -25,7 +25,7 @@ class MetadataActivity : AppCompatActivity() {
             val intent = Intent(this@MetadataActivity, GameResutlActivity::class.java)
             intent.putExtra("pdn", pdn)
             intent.putExtra("game", game)
-            startActivityForResult(intent, 4)
+            startActivityForResult(intent, 5)
         }
     }
 
