@@ -2,6 +2,7 @@ package com.example.draughtsid
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.example.draughtsid.databinding.ActivityGameResutlBinding
@@ -23,6 +24,7 @@ class GameResutlActivity : AppCompatActivity() {
         binding.SaveButton.setOnClickListener {
             val file = File("game.pdn")
             file.writeText(pdn!!, Charsets.UTF_8)
+            Log.d("pdn", pdn)
             Toast.makeText(this, "Save in ${File("").absolutePath}", Toast.LENGTH_SHORT).show()
         }
     }

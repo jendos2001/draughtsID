@@ -22,7 +22,7 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.game.setOnClickListener {
             val intent = Intent(this@ProfileActivity, GameActivity::class.java)
-            startActivityForResult(intent, 3)
+            startActivityForResult(intent, 10)
         }
 
         Thread {

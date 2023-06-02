@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
 import android.util.Base64
 import android.util.Log
 import android.view.View
@@ -27,6 +28,9 @@ import com.chaquo.python.android.AndroidPlatform
 import com.example.draughtsid.databinding.ActivityGameBinding
 import java.io.ByteArrayOutputStream
 import java.nio.ByteBuffer
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 
 class GameActivity : AppCompatActivity() {
@@ -47,7 +51,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var curPosition: String
     private var game = ""
     private var isWhiteMove = 0
-
+    private lateinit var cameraExecutor: ExecutorService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGameBinding.inflate(layoutInflater)
@@ -67,13 +71,15 @@ class GameActivity : AppCompatActivity() {
         spinner3.adapter = adapter3
         setContentView(binding.root)
 
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
         binding.pos.setOnClickListener {
             val intent = Intent(this@GameActivity, MainActivity::class.java)
             startActivityForResult(intent, 2)
         }
         binding.user.setOnClickListener {
             val intent = Intent(this@GameActivity, ProfileActivity::class.java)
-            startActivityForResult(intent, 4)
+            startActivityForResult(intent, 10)
         }
         if (!Python.isStarted()) {
             Python.start(AndroidPlatform(this@GameActivity))
@@ -91,7 +97,6 @@ class GameActivity : AppCompatActivity() {
         else{
             ActivityCompat.requestPermissions(this, Constans.REQUIRED_PERMISSIONS, Constans.REQUEST_CODE_PERMISSION)
         }
-
         binding.button.setOnClickListener {
             if (!isCheckStartPosition){
                 checkStart()
@@ -110,6 +115,9 @@ class GameActivity : AppCompatActivity() {
                 val intent = Intent(this@GameActivity, MetadataActivity::class.java)
                 intent.putExtra("game", game)
                 intent.putExtra("startPosition", startPosition)
+                Log.d("game", game)
+                Log.d("startPosition", startPosition)
+                cameraExecutor.shutdown()
                 startActivityForResult(intent, 3)
             }
         }
@@ -147,51 +155,73 @@ class GameActivity : AppCompatActivity() {
         spinner.onItemSelectedListener = itemSelectedListener
     }
 
-    private fun takePhoto(){
+    private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-        while (isStart) {
-            //Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate({
-            imageCapture.takePicture(
-                ContextCompat.getMainExecutor(this),
-                object : ImageCapture.OnImageCapturedCallback() {
-                    override fun onCaptureSuccess(image: ImageProxy) {
-                        Log.d("VVV", "VVV")
-                        val position = spinner.selectedItemPosition
-                        val position2 = spinner2.selectedItemPosition
-                        val position3 = spinner3.selectedItemPosition
-                        if (position3 == 1) isWhiteMove = 1 - isWhiteMove
-                        Log.d("Start22", "start22")
 
-                        Log.d("Timer", "timer")
-                        val bitmap = imageProxyToBitmap(image)
-                        Log.d("Timer", "timer2")
-                        Log.d("Timer", "timer3")
-                        val imgString = getStringImage(bitmap)
-                        val obj = pyo.callAttr("getMove", imgString, position, position2, isWhiteMove, curPosition)
-                        val move = obj.toString()
-                        val tmp = move.split("|")
-                        if (tmp[1] != "") curPosition = tmp[1]
-                        game += " ${tmp[0]}"
-                        if (tmp[0] != "") isWhiteMove = 1 - isWhiteMove
-                        Log.d("AAAAA", tmp[0])
-                        Log.d("AAAAA", tmp[1])
-                        image.close()
+        //while (isStart) {
+        //Handler().postDelayed({
+        //Log.d("2", "22")
+        //Thread {
+            //Log.d("1", "11")
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
+                {
+                    Thread {
+                        Log.d("1", "11")
+                    imageCapture.takePicture(
+                        ContextCompat.getMainExecutor(this),
+                        object : ImageCapture.OnImageCapturedCallback() {
+                            override fun onCaptureSuccess(image: ImageProxy) {
+                                Log.d("2", "22")
+                                Log.d("VVV", "VVV")
+                                val position = spinner.selectedItemPosition
+                                val position2 = spinner2.selectedItemPosition
+                                val position3 = spinner3.selectedItemPosition
+                                if (position3 == 1) isWhiteMove = 1 - isWhiteMove
+                                Log.d("Start22", "start22")
+
+                                Log.d("Timer", "timer")
+                                val bitmap = imageProxyToBitmap(image)
+                                Log.d("Timer", "timer2")
+                                Log.d("Timer", "timer3")
+                                val imgString = getStringImage(bitmap)
+                                val obj = pyo.callAttr(
+                                    "getMove",
+                                    imgString,
+                                    position,
+                                    position2,
+                                    curPosition,
+                                    isWhiteMove
+                                )
+                                val move = obj.toString()
+                                val tmp = move.split("|")
+                                if (tmp[1] != "") curPosition = tmp[1]
+                                game += " ${tmp[0]}"
+                                if (tmp[0] != "") isWhiteMove = 1 - isWhiteMove
+                                Log.d("AAAAA", tmp[0])
+                                Log.d("AAAAA", tmp[1])
+                                image.close()
 
 
-                        /*val intent = Intent(this@GameActivity, PositionActivity::class.java)
-                        intent.putExtra("white", positions[0])
-                        intent.putExtra("black", positions[1])
-                        startActivityForResult(intent, 1)*/
-                    }
+                                /*val intent = Intent(this@GameActivity, PositionActivity::class.java)
+                                    intent.putExtra("white", positions[0])
+                                    intent.putExtra("black", positions[1])
+                                    startActivityForResult(intent, 1)*/
+                            }
 
-                    override fun onError(exception: ImageCaptureException) {
-                        super.onError(exception)
-                    }
+                            override fun onError(exception: ImageCaptureException) {
+                                //super.onError(exception)
+                                Log.d("QWERTY", "QWERTY")
+                            }
 
-                    //})}, 0, 30, TimeUnit.SECONDS
-                    //)
-                })
-        }
+                        })
+                }.start()
+                }, 0, 40, TimeUnit.SECONDS
+            )
+        //}
+                    //})
+            //}, 40000)
+
+        //}
     }
 
     private fun checkStart(){
@@ -300,5 +330,10 @@ class GameActivity : AppCompatActivity() {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
         val imageBytes: ByteArray = baos.toByteArray()
         return Base64.encodeToString(imageBytes, Base64.DEFAULT)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
     }
 }

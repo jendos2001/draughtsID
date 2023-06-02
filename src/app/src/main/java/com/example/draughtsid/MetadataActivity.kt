@@ -14,6 +14,7 @@ class MetadataActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         var pdn: String
         binding = ActivityMetadataBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         binding.ContinueButton.setOnClickListener {
             val startPosition = intent.getStringExtra("startPosition")
             val game = intent.getStringExtra("game")
@@ -38,7 +39,7 @@ class MetadataActivity : AppCompatActivity() {
                 "[Site \"\"]\n" +
                 "[Date \"${
                     LocalDateTime.now()
-                        .format(DateTimeFormatter.ofPattern("MMM dd yyyy, hh:mm:ss a"))
+                        .format(DateTimeFormatter.ofPattern("MM dd yyyy, HH:mm:ss"))
                 }\"]\n" +
                 "[Result \"$result\"]\n" +
                 "[GameType \"25\"]\n" +
