@@ -97,7 +97,7 @@ def posToFEN(dfList: list, isVertical: bool, isBlack: bool) -> str:
 
 
 def start(paths: list, isVertical: bool, isBlack: bool) -> str:
-    model = torch.hub.load('./yolov5', 'custom', path='model/best.pt', source='local')
+    model = torch.hub.load('./yolov5', 'custom', path='model/best1.pt', source='local')
     model.conf = 0.6
     results = model(paths)
     return posToFEN(results.pandas().xyxy, isVertical, isBlack)

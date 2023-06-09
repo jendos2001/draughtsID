@@ -5,7 +5,9 @@ val: images/val/
 
 # Classes
 names:
-  0: Empty_Black_Cell
+  0: Board
   1: Black_Draught
-  2: White_Draught
+  2: Black_King
+  3: White_Draught
+  4: White_King
  
